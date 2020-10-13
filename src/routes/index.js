@@ -13,6 +13,10 @@ router.get('/seed',  async (req, res) => {
   await seedToDB(req, res);
 });
 
+router.get('/', authenticate, async (req, res) => {
+res.redirect('/docs');
+});
+
 // ITEMS ROUTE
 router.get('/items', authenticate, async (req, res) => {
   await allItems(req, res);
