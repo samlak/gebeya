@@ -1,0 +1,344 @@
+tags:
+- name: Item
+  description: Item management
+
+paths:
+  /items:
+    get:
+      tags:
+      - Item
+      summary: Get the list of all items
+      operationId: allItem
+      parameters:
+      - name: x-auth
+        in: header
+        description: an authorization header
+        required: true
+        type: string
+      - name: page
+        in: query
+        description: pagination
+        required: false
+        type: string
+      - name: sort
+        in: query
+        description: sorting
+        required: false
+        type: string
+        enum: 
+          - asc
+          - desc
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/AllItemResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /item/{id}:
+    get:
+      tags:
+      - Item
+      summary: Get item information
+      operationId: individualItem
+      parameters:
+      - name: x-auth
+        in: header
+        description: an authorization header
+        required: true
+        type: string
+      - name: id
+        in: path
+        description: Item ID
+        required: true
+        type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ItemResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /item/add:
+    post:
+      tags:
+      - Item
+      summary: Create new item
+      operationId: addItem
+      parameters:
+      - name: x-auth
+        in: header
+        description: an authorization header
+        required: true
+        type: string
+      requestBody:
+        description: New item information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddItem'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ItemResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /item/{id}/update:
+    patch:
+      tags:
+      - Item
+      summary: Update item information
+      operationId: updateItem
+      parameters:
+      - name: x-auth
+        in: header
+        description: an authorization header
+        required: true
+        type: string
+      - name: id
+        in: path
+        description: Item ID
+        required: true
+        type: string
+      requestBody:
+        description: Item information to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddItem'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ItemResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /item/{id}/upload:
+    patch:
+      tags:
+      - Item
+      summary: Upload item image
+      operationId: uploadItemPhoto
+      parameters:
+      - name: x-auth
+        in: header
+        description: an authorization header
+        required: true
+        type: string
+      - name: id
+        in: path
+        description: Item ID
+        required: true
+        type: string
+      requestBody:
+        description: Image upload
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photo:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /item/{id}/delete:
+    delete:
+      tags:
+      - Item
+      summary: Delete item
+      operationId: deleteItem
+      parameters:
+      - name: x-auth
+        in: header
+        description: an authorization header
+        required: true
+        type: string
+      - name: id
+        in: path
+        description: Item ID
+        required: true
+        type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/SuccessResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+
+    AddItem:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        vendor:
+          type: string
+        price:
+          type: integer
+      example:
+        name: School Bag
+        description: This is just a little description of the project without any releveant reference
+        vendor: Samlak Bags
+        price: 30000
+
+    AllItemResponse: 
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          properties:
+            type: object
+            _id: 
+              type: string
+            name: 
+              type: string
+            photo: 
+              type: string
+            description: 
+              type: string
+            price: 
+              type: integer
+            vendor: 
+              type: string
+        pagination: 
+          type: object
+          properties: 
+            previousPage:
+              type: string
+            currentPage:
+              type: string
+            nextPage:
+              type: string
+            totalPage:
+              type: integer
+      example:
+        status: success
+        data: [
+          {
+            _id: 5a92b7fdcb71600d68a94033,
+            name: Infinix Hot 2,
+            photo: image1.jpg,
+            description: Consequatur ratione voluptatum quasi sit natus ipsa? Est.,
+            price: 50000,
+            vendor: Infinix
+          },
+          ...
+        ]
+        pagination: {
+          previousPage: null,
+          currentPage: ?page=1,
+          nextPage: ?page=2,
+          totalPage: 2
+        }
+
+    ItemResponse: 
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            _id: 
+              type: string
+            name: 
+              type: string
+            photo: 
+              type: string
+            description: 
+              type: string
+            price: 
+              type: integer
+            vendor: 
+              type: string
+      example:
+        status: success
+        data: {
+          _id: 5a92b7fdcb71600d68a94033,
+          name: Infinix Hot 2,
+          photo: image1.jpg,
+          description: Consequatur ratione voluptatum quasi sit natus ipsa? Est.,
+          price: 50000,
+          vendor: Infinix
+        }
+
+    SuccessResponse: 
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: string
+      example:
+        status: success
+        data: Success Message

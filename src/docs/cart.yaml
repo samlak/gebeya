@@ -1,0 +1,168 @@
+tags:
+- name: Cart
+  description: Cart management
+
+paths:
+  /cart:
+    get:
+      tags:
+      - Cart
+      summary: Get the list of all item in a cart
+      operationId: getItemFromCart
+      parameters:
+      - name: x-auth
+        in: header
+        description: an authorization header
+        required: true
+        type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/CartResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /cart/add:
+    post:
+      tags:
+      - Cart
+      summary: Add and item into the cart
+      operationId: addItemToCart
+      parameters:
+      - name: x-auth
+        in: header
+        description: an authorization header
+        required: true
+        type: string
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddItemToCart'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/CartResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /cart/remove:
+    delete:
+      tags:
+      - Cart
+      summary: Create a new user
+      operationId: removeItemFromCart
+      parameters:
+      - name: x-auth
+        in: header
+        description: an authorization header
+        required: true
+        type: string
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveItemFromCart'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/CartResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+
+    AddItemToCart:
+      type: object
+      properties:
+        item:
+          type: string
+        quantity:
+          type: integer
+      example:
+        item: 5a92b7fdcb71600d68a94035
+        quantity: 4
+
+    RemoveItemFromCart:
+      type: object
+      properties:
+        item:
+          type: string
+      example:
+        item: 5a92b7fdcb71600d68a94034
+
+    CartResponse: 
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties: 
+            items: 
+              type: array
+              properties: 
+                item: 
+                  type: object
+                  properties: 
+                    item_id: 
+                      type: string
+                    name: 
+                      type: string
+                    price: 
+                      type: integer
+                    vendor: 
+                      type: string
+                quantity: 
+                  type: integer
+                total_price: 
+                  type: integer
+      example:
+        status: success
+        data: {
+          items: [
+            {
+              item: {
+                item_id: 5f85710d73a21c2c86bfffd8,
+                name: Infinix Hot 2,
+                price: 50000,
+                vendor: Infinix
+              },
+              quantity: 1,
+              total_price: 50000
+            },
+            ...
+          ]
+        }

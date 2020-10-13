@@ -1,0 +1,16 @@
+{
+  "swaggerDefinition": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Gebeya API",
+      "version": "1.0.0",
+      "description": "This is Gebeya API documentation"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:5000"
+      }
+    ]
+  },
+  "apis": ["./src/docs/**/*.yaml"]
+}

@@ -14,10 +14,11 @@ const cartInfo = async (req, res) => {
 		});
 
 	} catch (error) {
-		res.status(400).send({
-			status: "error",
-	    data: "Error fetching from database"
-		});
+    const errorMessage = error ? error.message : "Oops! Error fetching cart from database";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
 	}
 };
 
@@ -90,10 +91,11 @@ const addToCart = async (req, res) => {
 		}
 
 	} catch (error) {
-		res.status(400).send({
-			status: "error",
-	    data: error.message
-		});
+    const errorMessage = error ? error.message : "Oops! Error adding item to cart";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
 	}
 };
 
@@ -118,10 +120,11 @@ const removeFromCart = async (req, res) => {
       })
 		}
 	} catch (error) {
-		res.status(400).send({
-			status: "error",
-	    data: error.message 
-		});
+    const errorMessage = error ? error.message : "Oops! Error removing item from cart";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
 	}
 
 };

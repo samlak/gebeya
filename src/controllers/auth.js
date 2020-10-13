@@ -10,7 +10,7 @@ const login = async (req, res) => {
     const validation = body.email === '' || body.password === '';
 
     if(!input || validation){
-      throw new Error("[email, password] must be provided and can not be empty");
+      throw new Error("Oops! [email, password] must be provided and can not be empty");
     }
 
     const user = await User.findByCredentials(body.email, body.password);
@@ -24,9 +24,10 @@ const login = async (req, res) => {
 	    }
 		});
   }catch(error) {
+    const errorMessage = error ? error.message : "Login unsuccessful";
 		res.status(400).send({
 			status: "error",
-	    data: error.message
+	    data: errorMessage
 		});
   }
 }
@@ -39,7 +40,7 @@ const register = async (req, res) => {
     const validation = body.email === '' || body.password === ''|| body.name === '';
 
     if(!input || validation){
-      throw new Error("[email, password, name] must be provided and can not be empty");
+      throw new Error("Oops! [email, password, name] must be provided and can not be empty");
     }
 
     const user = new User(body);
@@ -56,10 +57,11 @@ const register = async (req, res) => {
 		});
 
   }catch(error) {
-		res.status(400).send({
-			status: "error",
-	    data: error.message
-		});
+    const errorMessage = error ? error.message : "Oops! User registration is unsuccessful";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
   }
 }
 

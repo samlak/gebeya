@@ -12,7 +12,7 @@ const allItems = async (req, res) => {
 	  let	currentPage;
 	  let	nextPage;
 
-		const resultPerPage = 10;
+		const resultPerPage = 5;
 		const totalItems = await Item.find().countDocuments();
 		const totalPage = Math.ceil(totalItems / resultPerPage);
 
@@ -68,10 +68,11 @@ const allItems = async (req, res) => {
 		});
 
 	} catch (error) {
-		res.status(400).send({
-			status: "error",
-	    data: "Error fetching from database"
-		});
+    const errorMessage = error ? error.message : "Oops! Error fetching items from database";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
 	}
 }
 
@@ -94,10 +95,11 @@ const individualItem =  async (req, res) => {
 		
 
 	} catch (error) {
-		res.status(400).send({
-			status: "error",
-	    data: "Error fetching from database"
-		});
+    const errorMessage = error ? error.message : "Oops! Error fetching item information";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
 	}
 }
 
@@ -122,10 +124,11 @@ const addItem =  async (req, res) => {
     });
 
 	} catch (error) {
-		res.status(400).send({
-			status: "error",
-	    data: error.message
-		});
+    const errorMessage = error ? error.message : "Oops! Error adding item to the database";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
 	}
 }
 
@@ -144,10 +147,11 @@ const updateItem =  async (req, res) => {
 			});
     });
 	} catch (error) {
-		res.status(400).send({
-			status: "error",
-	    data: "Oops! Item update failed"
-		});
+    const errorMessage = error ? error.message : "Oops! Item update failed";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
 	}
 }
 
@@ -157,7 +161,6 @@ try {
 			req.params.id,
     	{useFindAndModify: false}
 		).then((item) => {
-			console.log(item);
 			if(item.photo) {
 				fs.unlinkSync(path.join(__dirname, '../public/file/', item.photo));
 			}
@@ -167,10 +170,11 @@ try {
 			});
   	});
 	} catch (error) {
-		res.status(400).send({
-			status: "error",
-	    data: error.message
-		});
+    const errorMessage = error ? error.message : "Oops! Error deleting item from database";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
 	}
 }
 
@@ -194,10 +198,11 @@ const uploadImage =  async (req, res) => {
 			});
   	});
 	} catch (error) {
-		res.status(400).send({
-			status: "error",
-	    data: error.message
-		});
+    const errorMessage = error ? error.message : "Oops! Error uploading item image";
+    res.status(400).send({
+      status: "error",
+      data: errorMessage
+    });
 	}
 }
 
